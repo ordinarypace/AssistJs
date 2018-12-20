@@ -61,8 +61,6 @@ const Assist = class {
 
         const [el] = this.el;
 
-        console.log(el);
-
         return el.nextElementSibling;
     }
 
