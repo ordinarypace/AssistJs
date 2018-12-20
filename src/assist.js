@@ -13,13 +13,12 @@ const Assist = class {
         console.log($);
         if(typeof selector !== 'string') Assist.error('Selector must have string!');
 
-        if(!selector) return this;
-        else {
+        if(selector){
             this[0] = Array.from(document.querySelectorAll(selector));
             this.length = this[0].length;
-
-            return this;
         }
+        
+        return this;
     }
 
     on(events, callback, capture){
