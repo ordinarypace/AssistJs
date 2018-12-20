@@ -1,5 +1,6 @@
-import http from './http';
-import storage from './storage';
+import http from './lib/http';
+import storage from './lib/storage';
+import polyfill from './lib/polyfill';
 
 let $;
 
@@ -156,7 +157,3 @@ $.storage = storage;
 $.ajax = http.ajax({ url, method, body, credentials, mode, cache, headers, timeout });
 
 export default $;
-
-
-
-
