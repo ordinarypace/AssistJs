@@ -13,15 +13,15 @@ const Assist = class {
         if(typeof selector !== 'string') selector = selector.toString();
 
         if(selector){
-            this.el = Array.from(document.querySelectorAll(selector));
-            this.length = this.el.length;
+            this[0] = Array.from(document.querySelectorAll(selector));
+            this.length = this[0].length;
         }
 
         return this;
     }
 
     get el(){
-        return this.el;
+        return this[0];
     }
 
     on(events, callback, capture){
