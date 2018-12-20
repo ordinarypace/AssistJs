@@ -154,6 +154,6 @@ $.number = {
 };
 
 $.storage = storage;
-$.ajax = http.ajax({ url, method, body, credentials, mode, cache, headers, timeout });
+$.ajax = http.ajax;
 
 export default $;
