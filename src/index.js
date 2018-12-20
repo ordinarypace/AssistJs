@@ -9,3 +9,13 @@ console.log(data);
 
 // custom data set test
 console.log($('#app').data('parent-id', 1));
+
+// first, last, next, prev
+const first = $('.test-list').first();
+const last = $('.test-list').last();
+const next = $('.a').next();
+const prev = $('.b').prev();
+
+console.log(first, last, next, prev);
+
+

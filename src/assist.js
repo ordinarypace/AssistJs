@@ -1,6 +1,6 @@
+import './lib/polyfill';
 import http from './lib/http';
 import storage from './lib/storage';
-import polyfill from './lib/polyfill';
 
 let $;
 
@@ -10,16 +10,14 @@ const Assist = class {
     }
 
     constructor(selector = ''){
-        console.log($);
-        if(typeof selector !== 'string') Assist.error('Selector must have string!');
+        if(typeof selector !== 'string') selector = selector.toString();
 
-        if(!selector) return this;
-        else {
+        if(selector){
             this[0] = Array.from(document.querySelectorAll(selector));
             this.length = this[0].length;
-
-            return this;
         }
+
+        return this;
     }
 
     on(events, callback, capture){
@@ -39,7 +37,45 @@ const Assist = class {
     }
 
     insertAfter(newNode){
-        return this[0].parentNode.insertBefore(newNode, this[0].nextSibling), this;
+        if(this[0].length !== 1) Assist.error('There must be only one node');
+
+        const [el] = this[0];
+
+        return el.parentNode.insertBefore(newNode, el.nextSibling), this;
+    }
+
+    prev(){
+        if(this[0].length !== 1) Assist.error('There must be only one node');
+
+        const [el] = this[0];
+
+        return el.previousElementSibling;
+    }
+
+    next(){
+        if(this[0].length !== 1) Assist.error('There must be only one node');
+
+        const [el] = this[0];
+
+        console.log(el);
+
+        return el.nextElementSibling;
+    }
+
+    last(){
+        if(this[0].length !== 1) Assist.error('There must be only one node');
+
+        const [el] = this[0];
+
+        return el.lastElementChild;
+    }
+
+    first(){
+        if(this[0].length !== 1) Assist.error('There must be only one node');
+
+        const [el] = this[0];
+
+        return el.firstElementChild;
     }
 
     data(...params){
@@ -154,6 +190,6 @@ $.number = {
 };
 
 $.storage = storage;
-$.ajax = http.ajax({ url, method, body, credentials, mode, cache, headers, timeout });
+$.ajax = http.ajax;
 
 export default $;
