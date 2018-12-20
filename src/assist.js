@@ -13,49 +13,53 @@ const Assist = class {
         if(typeof selector !== 'string') selector = selector.toString();
 
         if(selector){
-            this[0] = Array.from(document.querySelectorAll(selector));
-            this.length = this[0].length;
+            this.el = Array.from(document.querySelectorAll(selector));
+            this.length = this.el.length;
         }
 
         return this;
     }
 
+    get el(){
+        return this.el;
+    }
+
     on(events, callback, capture){
-        return events.split(',').forEach(e => this[0].forEach(v => v.addEventListener(e, callback, capture))), this;
+        return events.split(',').forEach(e => this.el.forEach(v => v.addEventListener(e, callback, capture))), this;
     }
 
     off(events, callback){
-        return events.split(',').forEach(e => this[0].forEach(v => v.removeEventListener(e, callback))), this;
+        return events.split(',').forEach(e => this.el.forEach(v => v.removeEventListener(e, callback))), this;
     }
 
     append(...elements){
-        return this[0].forEach(v => { elements.forEach(c => v.appendChild(c)); }), this;
+        return this.el.forEach(v => { elements.forEach(c => v.appendChild(c)); }), this;
     }
 
     prepend(...elements){
-        return this[0].forEach(v => { elements.reverse().forEach(c => v.insertBefore(c, v.firstChild)); }), this;
+        return this.el.forEach(v => { elements.reverse().forEach(c => v.insertBefore(c, v.firstChild)); }), this;
     }
 
     insertAfter(newNode){
-        if(this[0].length !== 1) Assist.error('There must be only one node');
+        if(this.el.length !== 1) Assist.error('There must be only one node');
 
-        const [el] = this[0];
+        const [el] = this.el;
 
         return el.parentNode.insertBefore(newNode, el.nextSibling), this;
     }
 
     prev(){
-        if(this[0].length !== 1) Assist.error('There must be only one node');
+        if(this.el.length !== 1) Assist.error('There must be only one node');
 
-        const [el] = this[0];
+        const [el] = this.el;
 
         return el.previousElementSibling;
     }
 
     next(){
-        if(this[0].length !== 1) Assist.error('There must be only one node');
+        if(this.el.length !== 1) Assist.error('There must be only one node');
 
-        const [el] = this[0];
+        const [el] = this.el;
 
         console.log(el);
 
@@ -63,17 +67,17 @@ const Assist = class {
     }
 
     last(){
-        if(this[0].length !== 1) Assist.error('There must be only one node');
+        if(this.el.length !== 1) Assist.error('There must be only one node');
 
-        const [el] = this[0];
+        const [el] = this.el;
 
         return el.lastElementChild;
     }
 
     first(){
-        if(this[0].length !== 1) Assist.error('There must be only one node');
+        if(this.el.length !== 1) Assist.error('There must be only one node');
 
-        const [el] = this[0];
+        const [el] = this.el;
 
         return el.firstElementChild;
     }
@@ -85,7 +89,7 @@ const Assist = class {
 
         setter = String(setter);
 
-        this[0].forEach(v => {
+        this.el.forEach(v => {
             if('dataset' in v){
                 if(setter === 'undefined') result.push(v.dataset[camel]);
                 else v.dataset[camel] = setter;
