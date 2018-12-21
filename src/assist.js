@@ -62,12 +62,20 @@ const Assist = class {
         return this.el.forEach(v => { elements.reverse().forEach(c => v.insertBefore(c, v.firstChild)); }), this;
     }
 
-    insertAfter(newNode){
+    insertBefore(node){
         if(this.el.length !== 1) Assist.error('There must be only one node');
 
         const [el] = this.el;
 
-        return el.parentNode.insertBefore(newNode, el.nextSibling), this;
+        return el.parentNode.insertBefore(node, el), this;
+    }
+
+    insertAfter(node){
+        if(this.el.length !== 1) Assist.error('There must be only one node');
+
+        const [el] = this.el;
+
+        return el.parentNode.insertBefore(node, el.nextSibling), this;
     }
 
     prev(){
@@ -153,8 +161,8 @@ $.query = {
     string(o = {}){
         return Object.keys(o).reduce((p, c) => { return p.push(`${c}=${o[c]}`), p; }, []).join('&');
     },
-    params(url = null){
-        const params = {}, scheme = (url ? url : location.search).split('?');
+    params(url = location.search){
+        const params = {}, scheme = url.split('?');
 
         if(scheme.length > 1){
             scheme[1].split('&').forEach((v, i) => {
