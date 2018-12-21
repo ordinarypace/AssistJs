@@ -6,13 +6,7 @@ import cookie from './lib/cookie';
 import query from './lib/query';
 import number from './lib/number';
 import { empty, is } from './lib/utility';
-import Dom from './lib/dom';
-
-let $;
-
-$ = selector => {
-    return new Dom(selector);
-};
+import $ from './lib/dom';
 
 $.version = '0.0.1';
 $.empty = empty;

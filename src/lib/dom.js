@@ -113,4 +113,10 @@ const Dom = class {
     }
 };
 
-export default Dom;
+let $;
+
+$ = selector => {
+    return new Dom(selector);
+};
+
+export default $;
