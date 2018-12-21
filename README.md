@@ -8,22 +8,14 @@ Library containing ES6-based DOM control and utility methods.
 ```ruby
 import $ from '@/assist';
 
-// get node list
-$('#app') // [div#app];
+$('#app')
+$('#app').data('parent-id')
+$('#app').data('parent-id', 1);
 
-// get custom data
-$('#app').data('parent-id') // 1111
-
-// set custom data
-$('#app').data('parent-id', 1); // change data-parent-id value
-
-// first, last, next, prev, find
 const first = $('.test-list').first();
 const last = $('.test-list').last();
 const next = $('.a').next();
 const prev = $('.b').prev();
-
-// find
 const target = $('.test-list').find('.e');
 
 ```
