@@ -125,6 +125,7 @@ const Assist = class {
             }
         });
 
+
         if(result.length) return result.length === 1 ? result[0] : result;
     }
 };

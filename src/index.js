@@ -16,6 +16,7 @@ const last = $('.test-list').last();
 const next = $('.a').next();
 const prev = $('.b').prev();
 
-console.log(first, last, next, prev);
+const target = $('.test-list').find('.e');
+console.log(target);
 
 
