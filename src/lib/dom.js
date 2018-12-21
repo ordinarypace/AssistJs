@@ -87,6 +87,8 @@ const Dom = class {
     find(selector){
         const iterable =  new Traverse(this.el[0], selector);
 
+        console.log(...iterable);
+
         return [...iterable];
     }
 

@@ -3,6 +3,7 @@ const Traverse = class{
         this.el = el;
         this.target = target;
     }
+
     *[Symbol.iterator](){
         let el = this.el.firstElementChild;
 
@@ -11,8 +12,9 @@ const Traverse = class{
                 const pre = this.target.charAt(0);
                 let selector = this.target.slice(1);
 
-                if(pre === '.') if(el.classList.contains(selector)) yield el;
-                else if(pre === '#') if(el.id === selector) yield el;
+                if(pre === '.' && el.classList.contains(selector)) yield el;
+                else if(pre === '#' && el.id === selector) yield el;
+                else if(el.tagName.toLowerCase() === this.target) yield el;
 
             } while(el = el.nextElementSibling);
         }

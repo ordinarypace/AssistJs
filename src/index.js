@@ -17,7 +17,15 @@ const next = $('.a').next();
 const prev = $('.b').prev();
 
 const target = $('.test-list').find('.e');
+
 console.log(target);
+
+$('.test-list').append(document.createElement('li'));
+$('.test-list').prepend(document.createElement('li'));
+$('.test-list').insertBefore(document.createElement('div'));
+$('.test-list').insertAfter(document.createElement('div'));
+
+console.log($('body').find('div'));
 
 // get query string
 console.log($.query.params());
