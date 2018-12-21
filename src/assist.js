@@ -1,6 +1,7 @@
 import './lib/polyfill';
 import http from './lib/http';
 import storage from './lib/storage';
+import date from './lib/storage';
 
 let $;
 
@@ -149,10 +150,10 @@ $.empty = obj => {
 };
 
 $.query = {
-    string(o){
+    string(o = {}){
         return Object.keys(o).reduce((p, c) => { return p.push(`${c}=${o[c]}`), p; }, []).join('&');
     },
-    params(){
+    params(url = null){
         const params = {}, scheme = (url ? url : location.search).split('?');
 
         if(scheme.length > 1){
@@ -209,5 +210,6 @@ $.number = {
 
 $.storage = storage;
 $.ajax = http.ajax;
+$.date = date;
 
 export default $;

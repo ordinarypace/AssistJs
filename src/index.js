@@ -19,4 +19,7 @@ const prev = $('.b').prev();
 const target = $('.test-list').find('.e');
 console.log(target);
 
+// get query string
+console.log($.query.params());
+
 
