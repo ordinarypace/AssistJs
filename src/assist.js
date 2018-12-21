@@ -4,6 +4,27 @@ import storage from './lib/storage';
 
 let $;
 
+const Traverse = class{
+    constructor(el, target){
+        this.el = el;
+        this.target = target;
+    }
+    *[Symbol.iterator](){
+        let el = this.el.firstElementChild;
+
+        if(el){
+            do {
+                const pre = this.target.charAt(0);
+                let selector = this.target.slice(1);
+
+                if(pre === '.') if(el.classList.contains(selector)) yield el;
+                else if(pre === '#') if(el.id === selector) yield el;
+
+            } while(el = el.nextElementSibling);
+        }
+    }
+};
+
 const Assist = class {
     static error(str){
         new Error(str ? str : 'Invalid DOM!');
@@ -80,6 +101,12 @@ const Assist = class {
         return el.firstElementChild;
     }
 
+    find(selector){
+        const iterable =  new Traverse(this.el[0], selector);
+
+        return [...iterable];
+    }
+
     data(...params){
         const result = [];
         let [name, setter] = params;
@@ -99,18 +126,6 @@ const Assist = class {
         });
 
         if(result.length) return result.length === 1 ? result[0] : result;
-    }
-
-    loop(el, f, arg){
-        const stack = { length: 0 }; let k;
-
-        do{
-            if(k = el.firstElementChild) stack[stack.length++] = k;
-            if(k = el.nextElementSibling) stack[stack.length++] = k;
-
-            f(el, arg);
-
-        } while(stack.length && (el = stack[--stack.length]));
     }
 };
 
