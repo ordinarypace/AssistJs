@@ -11,7 +11,8 @@ import $ from '@/assist';
 $('#app')
 $('#app').append(childNode)
 $('#app').prepend(childNode)
-$('#app').insertAfter(newNode)
+$('#app').insertAfter(node)
+$('#app').insertBefore(node)
 
 $('#app').data('parent-id')
 $('#app').data('parent-id', 1);
