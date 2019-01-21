@@ -13,7 +13,7 @@ const http = (_ => {
 
         let result, stream, timer;
 
-        if(headers) defaults.headers = headers;
+        if(headers) Object.assign(defaults.headers, headers);
         if(method === 'post') defaults.body = JSON.stringify(body);
 
         stream = await Promise.race([
