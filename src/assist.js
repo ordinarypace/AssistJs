@@ -5,12 +5,15 @@ import date from './lib/storage';
 import cookie from './lib/cookie';
 import query from './lib/query';
 import number from './lib/number';
-import { empty, is } from './lib/utility';
+import { empty, error, is, debounce, throttle } from './lib/utility';
 import $ from './lib/dom';
 
 $.version = '0.0.1';
 $.empty = empty;
 $.is = is;
+$.error = error;
+$.debounce = debounce;
+$.throttle = throttle;
 $.query = query;
 $.cookie = cookie;
 $.number = number;

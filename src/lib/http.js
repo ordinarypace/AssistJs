@@ -1,5 +1,7 @@
+import { error } from './utility';
+
 const http = (_ => {
-    const ajax = async ({ url, method = 'get', body = {}, credentials = 'omit', mode = 'cors', cache = 'default', headers = {}, timeout = 3000 }) => {
+    const ajax = async ({ url, method = 'get', body = {}, credentials = 'same-origin', mode = 'cors', cache = 'default', headers = {}, timeout = 3000 }) => {
         if(typeof url !== 'string' || !url.trim().length) throw new Error('Invalid URL!');
 
         const defaults = {
@@ -12,7 +14,7 @@ const http = (_ => {
         let result, stream, timer;
 
         if(headers) defaults.headers = headers;
-        if(method === 'post') defaults.body = body;
+        if(method === 'post') defaults.body = JSON.stringify(body);
 
         stream = await Promise.race([
             fetch(new Request(url, defaults)),

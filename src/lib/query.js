@@ -11,10 +11,11 @@ const query = (_ => {
                 const [key, value] = v.split('=');
 
                 params[key] = value;
-                params.length = i;
             });
 
-        } else params.length = 0;
+        }
+
+        params.length = Object.keys(params).length;
 
         return params;
     };

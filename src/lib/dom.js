@@ -1,4 +1,5 @@
 import Traverse from "./traverse";
+import './polyfill';
 
 const Dom = class {
     static error(str){
@@ -9,8 +10,10 @@ const Dom = class {
         if(typeof selector !== 'string') selector = selector.toString();
 
         if(selector){
-            this[0] = Array.from(document.querySelectorAll(selector));
-            this.length = this[0].length;
+            const el = Array.from(document.querySelectorAll(selector));
+
+            this[0] = el.length > 1 ? [...el] : el[0];
+            this.length = el.length > 1 ? this[0].length : 1;
         }
 
         return this;
@@ -18,6 +21,10 @@ const Dom = class {
 
     get el(){
         return this[0];
+    }
+
+    set el(v){
+        this[0] = v;
     }
 
     on(events, callback, capture){
@@ -29,10 +36,12 @@ const Dom = class {
     }
 
     append(...elements){
+        if(!Array.isArray(this.el)) this.el = [this.el];
         return this.el.forEach(v => { elements.forEach(c => v.appendChild(c)); }), this;
     }
 
     prepend(...elements){
+        if(!Array.isArray(this.el)) this.el = [this.el];
         return this.el.forEach(v => { elements.reverse().forEach(c => v.insertBefore(c, v.firstChild)); }), this;
     }
 
@@ -57,7 +66,9 @@ const Dom = class {
 
         const [el] = this.el;
 
-        return el.previousElementSibling;
+        this.el = el.previousElementSibling;
+
+        return this;
     }
 
     next(){
@@ -65,7 +76,9 @@ const Dom = class {
 
         const [el] = this.el;
 
-        return el.nextElementSibling;
+        this.el = el.nextElementSibling;
+
+        return this;
     }
 
     last(){
@@ -73,7 +86,9 @@ const Dom = class {
 
         const [el] = this.el;
 
-        return el.lastElementChild;
+        this.el =  el.lastElementChild;
+
+        return this;
     }
 
     first(){
@@ -81,15 +96,17 @@ const Dom = class {
 
         const [el] = this.el;
 
-        return el.firstElementChild;
+        this.el = el.firstElementChild;
+
+        return this;
     }
 
     find(selector){
         const iterable =  new Traverse(this.el[0], selector);
 
-        console.log(...iterable);
+        this.el = [...iterable];
 
-        return [...iterable];
+        return this;
     }
 
     data(...params){
@@ -112,6 +129,18 @@ const Dom = class {
 
 
         if(result.length) return result.length === 1 ? result[0] : result;
+    }
+
+    show(){
+        this.el.style.display = '';
+
+        return this.el;
+    }
+
+    hide(){
+        this.el.style.display = 'none';
+
+        return this.el;
     }
 };
 
