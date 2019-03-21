@@ -7,13 +7,33 @@ const Dom = class {
     }
 
     constructor(selector = ''){
-        if(typeof selector !== 'string') selector = selector.toString();
+        let result;
 
-        if(selector){
-            const el = Array.from(document.querySelectorAll(selector));
+        if(typeof selector === 'object'){
+            if('nodeType' in selector && selector.nodeType === 1){
+                const { tagName } = selector;
+                const tag = tagName.toLowerCase();
 
-            this[0] = el.length > 1 ? [...el] : el[0];
-            this.length = el.length > 1 ? this[0].length : 1;
+                if(tag === 'window' && tag === 'document') result = (tag === 'window' ? [window] : [document]);
+                else result = [selector];
+
+            } else {
+                if(selector.id) result = this.getElements(`#${selector.id}`);
+                else if(selector.classList.length) result = this.getElements(Array.from(selector.classList).map(v => `.${v}`).join(''));
+                else Dom.error('Invalid DOM!');
+            }
+
+        } else result = this.getElements(selector);
+
+        if(result){
+            if(result.length > 1){
+                this[0] = [...result];
+                this.length = this[0].length;
+
+            } else {
+                this[0] = result[0];
+                this.length = 1;
+            }
         }
 
         return this;
@@ -27,12 +47,16 @@ const Dom = class {
         this[0] = v;
     }
 
+    getElements(selector){
+        return Array.from(document.querySelectorAll(selector))
+    }
+
     on(events, callback, capture){
-        return events.split(',').forEach(e => this.el.forEach(v => v.addEventListener(e, callback, capture))), this;
+        return events.split(',').forEach(e => (this.length === 1 ? [this.el] : this.el).forEach(v => v.addEventListener(e, callback, capture))), this;
     }
 
     off(events, callback){
-        return events.split(',').forEach(e => this.el.forEach(v => v.removeEventListener(e, callback))), this;
+        return events.split(',').forEach(e => (this.length === 1 ? [this.el] : this.el).forEach(v => v.removeEventListener(e, callback))), this;
     }
 
     append(...elements){
@@ -46,7 +70,7 @@ const Dom = class {
     }
 
     insertBefore(node){
-        if(this.el.length !== 1) Assist.error('There must be only one node');
+        if(this.length !== 1) Assist.error('There must be only one node');
 
         const [el] = this.el;
 
@@ -54,7 +78,7 @@ const Dom = class {
     }
 
     insertAfter(node){
-        if(this.el.length !== 1) Assist.error('There must be only one node');
+        if(this.length !== 1) Assist.error('There must be only one node');
 
         const [el] = this.el;
 
@@ -62,7 +86,7 @@ const Dom = class {
     }
 
     prev(){
-        if(this.el.length !== 1) Assist.error('There must be only one node');
+        if(this.length !== 1) Assist.error('There must be only one node');
 
         const [el] = this.el;
 
@@ -72,7 +96,7 @@ const Dom = class {
     }
 
     next(){
-        if(this.el.length !== 1) Assist.error('There must be only one node');
+        if(this.length !== 1) Assist.error('There must be only one node');
 
         const [el] = this.el;
 
@@ -82,7 +106,7 @@ const Dom = class {
     }
 
     last(){
-        if(this.el.length !== 1) Assist.error('There must be only one node');
+        if(this.length !== 1) Assist.error('There must be only one node');
 
         const [el] = this.el;
 
@@ -92,7 +116,7 @@ const Dom = class {
     }
 
     first(){
-        if(this.el.length !== 1) Assist.error('There must be only one node');
+        if(this.length !== 1) Assist.error('There must be only one node');
 
         const [el] = this.el;
 
@@ -109,26 +133,8 @@ const Dom = class {
         return this;
     }
 
-    data(...params){
-        const result = [];
-        let [name, setter] = params;
-        const camel = name.replace(/-([a-z])/g, g => g[1].toUpperCase());
-
-        setter = String(setter);
-
-        this.el.forEach(v => {
-            if('dataset' in v){
-                if(setter === 'undefined') result.push(v.dataset[camel]);
-                else v.dataset[camel] = setter;
-
-            } else {
-                if(!setter) result.push(v.getAttribute('data-', name));
-                else v.setAttribute(`data-${name}`, setter);
-            }
-        });
-
-
-        if(result.length) return result.length === 1 ? result[0] : result;
+    remove(){
+        this.el.remove();
     }
 
     show(){
@@ -141,6 +147,14 @@ const Dom = class {
         this.el.style.display = 'none';
 
         return this.el;
+    }
+
+    set html(v){
+        this.el.innerHTML = v;
+    }
+
+    get html(){
+        return this.el.innerHTML;
     }
 };
 

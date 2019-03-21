@@ -5,6 +5,7 @@ import date from './lib/storage';
 import cookie from './lib/cookie';
 import query from './lib/query';
 import number from './lib/number';
+import detect from './lib/detect';
 import { empty, error, is, debounce, throttle } from './lib/utility';
 import $ from './lib/dom';
 
@@ -20,5 +21,6 @@ $.number = number;
 $.storage = storage;
 $.ajax = http.ajax;
 $.date = date;
+$.detect = detect;
 
 export default $;

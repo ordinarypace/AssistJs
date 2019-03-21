@@ -1,19 +1,25 @@
 import { error } from './utility';
 
 const http = (_ => {
-    const ajax = async ({ url, method = 'get', body = {}, credentials = 'same-origin', mode = 'cors', cache = 'default', headers = {}, timeout = 3000 }) => {
+    const ajax = async ({ url, method = 'get', body = {}, credentials = 'same-origin', contentType = 'application/json', mode = 'cors', cache = 'default', headers = {}, timeout = 3000 }) => {
         if(typeof url !== 'string' || !url.trim().length) throw new Error('Invalid URL!');
 
         const defaults = {
             method,
             credentials,
             mode,
-            cache
+            cache,
+            headers: new Headers()
         };
 
         let result, stream, timer;
 
-        if(headers) defaults.headers = headers;
+        defaults.headers.append('Content-Type', `${contentType}`);
+
+        if(headers){
+            // defaults.headers.append('Accept', 'application/json');
+            Object.keys(headers).map(v => defaults.headers.append(v, headers[v]));
+        }
         if(method === 'post') defaults.body = JSON.stringify(body);
 
         stream = await Promise.race([
@@ -31,7 +37,7 @@ const http = (_ => {
 
         } else result = status;
 
-        return result;
+        return JSON.parse(result);
     };
 
     return {

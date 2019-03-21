@@ -1,0 +1,1 @@
+export default ({ name, type, pattern, value }) => (Object.prototype.toString.call(pattern) !== '[object RegExp]' ? new RegExp(pattern) : pattern).test(value);
